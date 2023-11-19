@@ -10,7 +10,6 @@ function App() {
   const [copied, setCopied] = useState<number>(0);
   const [linkToCopy, setLinkToCopy] = useState("");
   const [url, setUrl] = useState();
-  const [form] = Form.useForm();
 
   useEffect(() => {
     if(copied != 0){
@@ -22,9 +21,10 @@ function App() {
   }, [copied])
 
   const onFinish = () => {
-    const request = { original_link: url.replace('https://www.ine.gov.mz/', '')};
+    console.log(url);
+    const request = { original: url.replace('https://www.ine.gov.mz/', '')};
     axios
-      .post('https://www.ine.gov.mz:4321', request)
+      .post('http://localhost:3000/new_link', request)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then((resp: any) => {
         if (resp.status == 200) {
@@ -33,6 +33,7 @@ function App() {
           } 
         }
       });
+      // settime
   };
 
   return (
@@ -40,10 +41,15 @@ function App() {
       <div className="container">
         <div className="settings">
           <div className='form'>
-            <Form >
+            <Form>
               <Form.Item label={'URL'} className="mb-3" placeholder="URL API">
                 <Input
                   type="primary"
+                  onChange={
+                    (e) => {
+                      setUrl(e.target.value);
+                    }
+                  }
                 />
               </Form.Item>
             </Form>
